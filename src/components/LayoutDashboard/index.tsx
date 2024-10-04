@@ -1,34 +1,29 @@
-import { ReactNode, useEffect, useState } from "react"
-import { Link } from 'react-router-dom'
-import { IToken } from "../../interfaces/token"
-import { validaPermissao } from "../../services/token"
+import { ReactNode, useEffect, useState } from "react";
+import { Link } from 'react-router-dom';
+import { IToken } from "../../interfaces/token";
+import { validaPermissao } from "../../services/token";
+import './layoutdashboard.css';
 
 interface IProps {
-    children: ReactNode
+    children: ReactNode;
 }
 
 export const LayoutDashboard = (props: IProps) => {
-
-    const [token, setToken] = useState<IToken>()
+    const [token, setToken] = useState<IToken>();
 
     useEffect(() => {
-        let lsToken = localStorage.getItem('americanos.token')
-
-        let token: IToken | undefined
+        let lsToken = localStorage.getItem('americanos.token');
 
         if (typeof lsToken === 'string') {
-            token = JSON.parse(lsToken)
-            setToken(token)
+            const token: IToken = JSON.parse(lsToken);
+            setToken(token);
         }
-    })
+    }, []); // Adiciona dependências vazias para executar apenas uma vez
 
     return (
         <>
-            <header
-                className="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0"
-            >
-                <a className="navbar-brand col-md-3 col-lg-2 me-0 px-3"
-                    href="#">
+            <header className="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
+                <a className="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">
                     Atualização do Site
                 </a>
                 <button
@@ -53,48 +48,28 @@ export const LayoutDashboard = (props: IProps) => {
 
             <div className="container-fluid">
                 <div className="row">
-                    <nav
-                        id="sidebarMenu"
-                        className="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse"
-                    >
+                    <nav id="sidebarMenu" className="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
                         <div className="position-sticky pt-3">
                             <ul className="nav flex-column">
-                                <li className="nav-item">
-                                    <Link
-                                        className={`nav-link`}
-                                        to={'/dashboard'}
-                                    >
+                                <li className="nav-item" key="dashboard">
+                                    <Link className="nav-link" to="/dashboard">
                                         Dashboard
                                     </Link>
                                 </li>
-                                {
-                                    validaPermissao(['admin', 'usuario'],
-                                        token?.user.permissoes
-                                     ) && 
-                                     <li className="nav-item">
-                                     <Link
-                                         className={`nav-link`}
-                                         to={'/usuarios'}
-                                     >
-                                         Funcionários
-                                     </Link>
-                                 </li>
-                                }
-                               
-                                <li className="nav-item">
-                                    <Link
-                                        className={`nav-link`}
-                                        to={'/dashboard'}
-                                    >
+                                {validaPermissao(['admin', 'usuario'], token?.user.permissoes) && (
+                                    <li className="nav-item" key="usuarios">
+                                        <Link className="nav-link" to="/usuarios">
+                                            Funcionários
+                                        </Link>
+                                    </li>
+                                )}
+                                <li className="nav-item" key="galeria">
+                                    <Link className="nav-link" to="/galeria">
                                         Galeria
                                     </Link>
                                 </li>
-
-                                <li className="nav-item">
-                                    <Link
-                                        className={`nav-link`}
-                                        to={'/dashboard'}
-                                    >
+                                <li className="nav-item" key="premios">
+                                    <Link className="nav-link" to="/premios">
                                         Prêmios
                                     </Link>
                                 </li>
@@ -102,17 +77,11 @@ export const LayoutDashboard = (props: IProps) => {
                         </div>
                     </nav>
 
-
-                    <main
-                        className="col-md-9 ms-sm-auto col-lg-10 px-md-4"
-                    >
-
+                    <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                         {props.children}
-
                     </main>
-
                 </div>
             </div>
         </>
-    )
-}
+    );
+};
