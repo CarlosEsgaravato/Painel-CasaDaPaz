@@ -5,10 +5,11 @@ import {
 } from 'react-router-dom'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
-import Produto from './pages/Produto'
+import Produto from './pages/Galeria'
 import PageExampleState from './pages/PageExampleState'
 import Usuarios from './pages/Usuarios'
 import GerenciarUsuarios from './pages/Usuarios/Gerenciar'
+import Galeria from './pages/Galeria'
 
 export const Rotas = () => {
     return (
@@ -41,8 +42,8 @@ export const Rotas = () => {
                 />
 
                 <Route
-                    path='/example'
-                    element={<PageExampleState />}
+                    path='/galeria'
+                    element={<Galeria />}
                 />
 
             </Routes>

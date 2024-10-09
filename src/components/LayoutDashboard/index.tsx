@@ -1,5 +1,5 @@
 import { ReactNode, useEffect, useState } from "react";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { IToken } from "../../interfaces/token";
 import { validaPermissao } from "../../services/token";
 import './layoutdashboard.css';
@@ -10,6 +10,7 @@ interface IProps {
 
 export const LayoutDashboard = (props: IProps) => {
     const [token, setToken] = useState<IToken>();
+    const navigate = useNavigate();
 
     useEffect(() => {
         let lsToken = localStorage.getItem('americanos.token');
@@ -19,6 +20,12 @@ export const LayoutDashboard = (props: IProps) => {
             setToken(token);
         }
     }, []); // Adiciona dependências vazias para executar apenas uma vez
+
+    const handleLogout = () => {
+        localStorage.removeItem('americanos.token');
+        setToken(undefined);
+        navigate('/');
+    };
 
     return (
         <>
@@ -41,7 +48,7 @@ export const LayoutDashboard = (props: IProps) => {
                 <div className="w-100"></div>
                 <div className="navbar-nav">
                     <div className="nav-item text-nowrap">
-                        <a className="nav-link px-3" href="#">Sair</a>
+                        <a className="nav-link px-3" href="#" onClick={handleLogout}>Sair</a>
                     </div>
                 </div>
             </header>
@@ -59,7 +66,7 @@ export const LayoutDashboard = (props: IProps) => {
                                 {validaPermissao(['admin', 'usuario'], token?.user.permissoes) && (
                                     <li className="nav-item" key="usuarios">
                                         <Link className="nav-link" to="/usuarios">
-                                            Funcionários
+                                            Usuários
                                         </Link>
                                     </li>
                                 )}
