@@ -1,17 +1,83 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { LayoutDashboard } from '../../components/LayoutDashboard';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { Button, Table } from 'react-bootstrap';
 
+interface IEvento {
+    id: number;
+    nome: string;
+    descricao: string;
+}
 
 const Galeria = () => {
-    return (
+    const navigate = useNavigate();
+    const [eventos, setEventos] = useState<Array<IEvento>>([]);
+
+    useEffect(() => {
+        axios.get('http://localhost:3001/eventos')
+            .then((resposta) => {
+                setEventos(resposta.data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }, []);
     
-       <LayoutDashboard>
-        
-        <p>informações da galeria a definir</p>
 
-       </LayoutDashboard>
+    return (
+        <LayoutDashboard>
+            <div className="d-flex justify-content-between mt-3">
+                <h1>Galeria de Eventos</h1>
+                <Button variant="success" onClick={() => navigate('/galeria/criar')}>
+                    Adicionar Evento
+                </Button>
+            </div>
 
-      
+            <Table striped bordered hover className="mt-4">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Nome</th>
+                        <th>Descrição</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {eventos.map((evento, index) => (
+                        <tr key={evento.id}>
+                            <td>{index + 1}</td>
+                            <td>{evento.nome}</td>
+                            <td>{evento.descricao}</td>
+                            <td>
+                                <Button
+                                    variant="warning"
+                                    onClick={() => navigate(`/galeria/editar/${evento.id}`)}
+                                >
+                                    Editar
+                                </Button>
+                                <Button
+                                    variant="danger"
+                                    onClick={() => {
+                                        // Lógica para remover evento
+                                    }}
+                                    className="ml-2"
+                                >
+                                    Remover
+                                </Button>
+                                <Button
+                                    variant="info"
+                                    onClick={() => navigate(`/galeria/${evento.id}/fotos`)}
+                                    className="ml-2"
+                                >
+                                    Ver Fotos
+                                </Button>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </Table>
+        </LayoutDashboard>
     );
 };
 

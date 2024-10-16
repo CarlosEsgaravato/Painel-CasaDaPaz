@@ -10,6 +10,9 @@ import GerenciarUsuarios from './pages/Usuarios/Gerenciar'
 import Galeria from './pages/Galeria'
 import Premios from './pages/Premios'
 import GerenciarPremios from './pages/Premios/gerenciarPremios'
+import GerenciarEvento from './pages/Galeria/gerenciarEvento'
+import VisualizarFotos from './pages/Galeria/vizualizarFotos'
+import AdicionarFotos from './pages/Galeria/adicionarFotos'
 
 
 export const Rotas = () => {
@@ -55,6 +58,26 @@ export const Rotas = () => {
                 <Route
                     path='/galeria'
                     element={<Galeria />}
+                />
+
+                <Route
+                    path='/galeria/criar'
+                    element={<GerenciarEvento />}
+                />
+
+                <Route 
+                    path='/galeria/editar/:id' 
+                    element={<GerenciarEvento />} 
+                />
+
+                <Route 
+                    path='/galeria/:id/fotos' 
+                    element={<VisualizarFotos />} 
+                />
+
+                <Route 
+                    path='/galeria/:id/fotos/adicionar' 
+                    element={<AdicionarFotos />} 
                 />
 
             </Routes>

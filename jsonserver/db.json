@@ -21,5 +21,29 @@
       "permissoes": "colaborador",
       "id": 3
     }
+  ],
+  "eventos": [
+    {
+      "nome": "Aniversario Casa da Paz",
+      "descricao": "comemoração 25 anos",
+      "id": 1
+    }
+  ],
+  "premios": [
+    {
+      "id": 1
+    },
+    {
+      "id": 2
+    },
+    {
+      "id": 3
+    },
+    {
+      "id": 4
+    },
+    {
+      "id": 5
+    }
   ]
 }

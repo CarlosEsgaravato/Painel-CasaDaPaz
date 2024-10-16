@@ -8,10 +8,9 @@ import { Button, Container } from 'react-bootstrap';
 interface IForm {
     nome: string;
     descricao: string;
-    imagem?: FileList;
 }
 
-const GerenciarPremios = () => {
+const GerenciarEvento = () => {
     const { register, handleSubmit, formState: { errors }, setValue } = useForm<IForm>();
     const refForm = useRef<any>();
     const navigate = useNavigate();
@@ -21,7 +20,7 @@ const GerenciarPremios = () => {
     useEffect(() => {
         if (id) {
             setIsEdit(true);
-            axios.get(`http://localhost:3001/premios/${id}`)
+            axios.get(`http://localhost:3001/eventos/${id}`)
                 .then((res) => {
                     setValue("nome", res.data.nome);
                     setValue("descricao", res.data.descricao);
@@ -29,31 +28,17 @@ const GerenciarPremios = () => {
                 .catch((err) => console.log(err));
         }
     }, [id, setValue]);
+    
 
     const submitForm: SubmitHandler<IForm> = useCallback(
         async (data) => {
-            const formData = new FormData();
-            formData.append('nome', data.nome);
-            formData.append('descricao', data.descricao);
-            if (data.imagem && data.imagem.length > 0) {
-                formData.append('imagem', data.imagem);
-            }
-
             try {
                 if (isEdit) {
-                    await axios.put(`http://localhost:3001/premios/${id}`, formData, {
-                        headers: {
-                            'Content-Type': 'multipart/form-data',
-                        },
-                    });
+                    await axios.put(`http://localhost:3001/eventos/${id}`, data);
                 } else {
-                    await axios.post('http://localhost:3001/premios', formData, {
-                        headers: {
-                            'Content-Type': 'multipart/form-data',
-                        },
-                    });
+                    await axios.post('http://localhost:3001/eventos', data);
                 }
-                navigate('/premios');
+                navigate('/galeria');
             } catch (error) {
                 console.error('Axios error:', error.response ? error.response.data : error.message);
             }
@@ -62,7 +47,7 @@ const GerenciarPremios = () => {
 
     return (
         <LayoutDashboard>
-            <h1>{isEdit ? 'Editar Premiação' : 'Adicionar Premiação'}</h1>
+            <h1>{isEdit ? 'Editar Evento' : 'Adicionar Evento'}</h1>
             <Container>
                 <form
                     className="row g-3 needs-validation mb-3"
@@ -80,7 +65,7 @@ const GerenciarPremios = () => {
                         <input
                             type="text"
                             className="form-control"
-                            placeholder="Nome da Premiação"
+                            placeholder="Nome do Evento"
                             id="nome"
                             required
                             {...register('nome', { required: 'Nome é obrigatório' })}
@@ -94,7 +79,7 @@ const GerenciarPremios = () => {
                         <label htmlFor="descricao" className="form-label">Descrição</label>
                         <textarea
                             className="form-control"
-                            placeholder="Descrição da Premiação"
+                            placeholder="Descrição do Evento"
                             id="descricao"
                             required
                             {...register('descricao', { required: 'Descrição é obrigatória' })}
@@ -105,23 +90,13 @@ const GerenciarPremios = () => {
                     </div>
 
                     <div className="col-md-12">
-                        <label htmlFor="imagem" className="form-label">Imagem (opcional)</label>
-                        <input
-                            type="file"
-                            className="form-control"
-                            id="imagem"
-                            {...register('imagem')}
-                        />
-                    </div>
-
-                    <div className="col-md-12">
                         <button type="submit" className="btn btn-success">
                             {isEdit ? 'Salvar Alterações' : 'Adicionar'}
                         </button>
                         <button
                             type="button"
                             className="btn btn-secondary ml-2"
-                            onClick={() => navigate('/premios')}
+                            onClick={() => navigate('/galeria')}
                         >
                             Cancelar
                         </button>
@@ -132,4 +107,4 @@ const GerenciarPremios = () => {
     );
 };
 
-export default GerenciarPremios;
+export default GerenciarEvento;
