@@ -247,6 +247,13 @@ export default function GerenciarUsuarios() {
                         >
                             Salvar
                         </button>
+                        <button
+                            type="button"
+                            className="btn btn-secondary ml-2"
+                            onClick={() => navigate('/usuarios')}
+                        >
+                            Cancelar
+                        </button>
                     </div>
                 </form>
             </LayoutDashboard>
