@@ -8,7 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "server": "npx json-server ./jsonserver/db.json --port 3001 -m ./node_modules/json-server-auth"
+    "server": "npx json-server ./jsonserver/db.json --port 3001 -m ./node_modules/json-server-auth" 
   },
   "dependencies": {
     "@types/jsonwebtoken": "^9.0.6",

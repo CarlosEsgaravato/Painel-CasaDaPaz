@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { LayoutDashboard } from '../../components/LayoutDashboard';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { Button, Table } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 
 interface IPremio {
     id: number;
@@ -11,7 +11,7 @@ interface IPremio {
     imagem?: string;
 }
 
-const Premios = () => {
+const Premios: React.FC = () => {
     const navigate = useNavigate();
     const [premios, setPremios] = useState<Array<IPremio>>([]);
 
@@ -25,16 +25,26 @@ const Premios = () => {
             });
     }, []);
 
+    const handleDelete = (id: number) => {
+        axios.delete(`http://localhost:3001/premios/${id}`)
+            .then(() => {
+                setPremios(premios.filter(premio => premio.id !== id));
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+
     return (
         <LayoutDashboard>
             <div className="d-flex justify-content-between mt-3">
                 <h1>Premiações</h1>
                 <Button variant="success" onClick={() => navigate('/premios/criar')}>
-                    Adicionar Premiação
+                    Adicionar
                 </Button>
             </div>
 
-            <Table striped bordered hover className="mt-4">
+            <table className="table table-striped">
                 <thead>
                     <tr>
                         <th>#</th>
@@ -62,18 +72,16 @@ const Premios = () => {
                                 </Button>
                                 <Button
                                     variant="danger"
-                                    onClick={() => {
-                                        // Lógica para remover premiação
-                                    }}
+                                    onClick={() => handleDelete(premio.id)}
                                     className="ml-2"
                                 >
-                                    Remover
+                                    Delete
                                 </Button>
                             </td>
                         </tr>
                     ))}
                 </tbody>
-            </Table>
+            </table>
         </LayoutDashboard>
     );
 };

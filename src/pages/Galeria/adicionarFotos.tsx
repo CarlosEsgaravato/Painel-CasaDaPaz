@@ -9,11 +9,11 @@ interface IForm {
     fotos: FileList;
 }
 
-const AdicionarFotos = () => {
+const AdicionarFotos: React.FC = () => {
     const { register, handleSubmit, formState: { errors } } = useForm<IForm>();
-    const refForm = useRef<any>();
+    const refForm = useRef<HTMLFormElement>(null);
     const navigate = useNavigate();
-    const { id } = useParams();
+    const { id } = useParams<{ id: string }>();
 
     const submitForm: SubmitHandler<IForm> = useCallback(
         async (data) => {
@@ -29,8 +29,12 @@ const AdicionarFotos = () => {
                     },
                 });
                 navigate(`/galeria/${id}/fotos`);
-            } catch (error) {
-                console.error('Axios error:', error.response ? error.response.data : error.message);
+            } catch (error: any) {
+                if (error.response) {
+                    console.error('Axios error:', error.response.data);
+                } else {
+                    console.error('Axios error:', error.message);
+                }
             }
         }, [id, navigate]
     );
@@ -43,9 +47,11 @@ const AdicionarFotos = () => {
                     className="row g-3 needs-validation mb-3"
                     noValidate
                     style={{ alignItems: 'center' }}
-                    onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
+                    onSubmit={(event) => {
                         event.preventDefault();
-                        refForm.current.classList.add('was-validated');
+                        if (refForm.current) {
+                            refForm.current.classList.add('was-validated');
+                        }
                         handleSubmit(submitForm)(event);
                     }}
                     ref={refForm}

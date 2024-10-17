@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { LayoutDashboard } from '../../components/LayoutDashboard';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { Button, Table } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 
 interface IEvento {
     id: number;
@@ -10,7 +10,7 @@ interface IEvento {
     descricao: string;
 }
 
-const Galeria = () => {
+const Galeria: React.FC = () => {
     const navigate = useNavigate();
     const [eventos, setEventos] = useState<Array<IEvento>>([]);
 
@@ -23,7 +23,16 @@ const Galeria = () => {
                 console.log(err);
             });
     }, []);
-    
+
+    const handleDelete = (id: number) => {
+        axios.delete(`http://localhost:3001/eventos/${id}`)
+            .then(() => {
+                setEventos(eventos.filter(evento => evento.id !== id));
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
 
     return (
         <LayoutDashboard>
@@ -34,7 +43,7 @@ const Galeria = () => {
                 </Button>
             </div>
 
-            <Table striped bordered hover className="mt-4">
+            <table className="table table-striped">
                 <thead>
                     <tr>
                         <th>#</th>
@@ -58,12 +67,10 @@ const Galeria = () => {
                                 </Button>
                                 <Button
                                     variant="danger"
-                                    onClick={() => {
-                                        // Lógica para remover evento
-                                    }}
+                                    onClick={() => handleDelete(evento.id)}
                                     className="ml-2"
                                 >
-                                    Remover
+                                    Delete
                                 </Button>
                                 <Button
                                     variant="info"
@@ -76,7 +83,7 @@ const Galeria = () => {
                         </tr>
                     ))}
                 </tbody>
-            </Table>
+            </table>
         </LayoutDashboard>
     );
 };

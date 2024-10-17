@@ -11,11 +11,11 @@ interface IForm {
     imagem?: FileList;
 }
 
-const GerenciarPremios = () => {
+const GerenciarPremios: React.FC = () => {
     const { register, handleSubmit, formState: { errors }, setValue } = useForm<IForm>();
-    const refForm = useRef<any>();
+    const refForm = useRef<HTMLFormElement>(null);
     const navigate = useNavigate();
-    const { id } = useParams();
+    const { id } = useParams<{ id: string }>();
     const [isEdit, setIsEdit] = useState(false);
 
     useEffect(() => {
@@ -36,7 +36,12 @@ const GerenciarPremios = () => {
             formData.append('nome', data.nome);
             formData.append('descricao', data.descricao);
             if (data.imagem && data.imagem.length > 0) {
-                formData.append('imagem', data.imagem);
+                formData.append('imagem', data.imagem); // Acessando o primeiro arquivo da lista
+            }
+
+            // Log the FormData content
+            for (let pair of formData.entries()) {
+                console.log(pair + ': ' + pair);
             }
 
             try {
@@ -54,8 +59,12 @@ const GerenciarPremios = () => {
                     });
                 }
                 navigate('/premios');
-            } catch (error) {
-                console.error('Axios error:', error.response ? error.response.data : error.message);
+            } catch (error: any) {
+                if (error.response) {
+                    console.error('Axios error:', error.response.data);
+                } else {
+                    console.error('Axios error:', error.message);
+                }
             }
         }, [isEdit, id, navigate]
     );
@@ -68,9 +77,11 @@ const GerenciarPremios = () => {
                     className="row g-3 needs-validation mb-3"
                     noValidate
                     style={{ alignItems: 'center' }}
-                    onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
+                    onSubmit={(event) => {
                         event.preventDefault();
-                        refForm.current.classList.add('was-validated');
+                        if (refForm.current) {
+                            refForm.current.classList.add('was-validated');
+                        }
                         handleSubmit(submitForm)(event);
                     }}
                     ref={refForm}
