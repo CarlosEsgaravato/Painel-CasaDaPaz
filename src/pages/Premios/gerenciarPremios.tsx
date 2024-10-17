@@ -36,14 +36,14 @@ const GerenciarPremios: React.FC = () => {
             formData.append('nome', data.nome);
             formData.append('descricao', data.descricao);
             if (data.imagem && data.imagem.length > 0) {
-                formData.append('imagem', data.imagem); // Acessando o primeiro arquivo da lista
+                formData.append('imagem', data.imagem[0]);
             }
-
+    
             // Log the FormData content
             for (let pair of formData.entries()) {
-                console.log(pair + ': ' + pair);
+                console.log(pair[0] + ': ' + pair[1]);
             }
-
+    
             try {
                 if (isEdit) {
                     await axios.put(`http://localhost:3001/premios/${id}`, formData, {
@@ -68,6 +68,7 @@ const GerenciarPremios: React.FC = () => {
             }
         }, [isEdit, id, navigate]
     );
+    
 
     return (
         <LayoutDashboard>

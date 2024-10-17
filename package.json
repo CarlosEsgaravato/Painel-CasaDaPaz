@@ -8,10 +8,12 @@
     "build": "tsc -b && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "server": "npx json-server ./jsonserver/db.json --port 3001 -m ./node_modules/json-server-auth" 
+    "server": "npx json-server ./jsonserver/db.json --port 3001 -m ./node_modules/json-server-auth"
   },
   "dependencies": {
+    "@types/express": "^5.0.0",
     "@types/jsonwebtoken": "^9.0.6",
+    "@types/multer": "^1.4.12",
     "axios": "^1.7.4",
     "bootstrap": "^5.3.3",
     "express": "^4.21.1",
