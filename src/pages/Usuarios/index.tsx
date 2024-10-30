@@ -42,9 +42,9 @@ export default function Usuarios() {
 
 
         //trazer os usuarios do backend
-        axios.get('http://localhost:3001/users')
+        axios.get('http://localhost:8000/api/usuarios')
             .then((resposta) => {
-                setUsuarios(resposta.data)
+                setUsuarios(resposta.data.data)
             })
             .catch((err) => {
                 console.log(err)

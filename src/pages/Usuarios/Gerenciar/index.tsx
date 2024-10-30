@@ -82,7 +82,7 @@ export default function GerenciarUsuarios() {
                     delete data.password
                 }
 
-                axios.put('http://localhost:3001/users/' + id
+                axios.put('http://localhost:8000/users/' + id
 
                     ,data
                 )
@@ -217,7 +217,7 @@ export default function GerenciarUsuarios() {
                             htmlFor="password"
                             className="form-label"
                         >
-                            SEnha
+                            Senha
                         </label>
                         <input
                             type="password"
