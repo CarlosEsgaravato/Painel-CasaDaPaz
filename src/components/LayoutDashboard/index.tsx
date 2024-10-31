@@ -63,13 +63,11 @@ export const LayoutDashboard = (props: IProps) => {
                                         Dashboard
                                     </Link>
                                 </li>
-                                {validaPermissao(['admin', 'usuario'], token?.user.permissoes) && (
                                     <li className="nav-item" key="usuarios">
                                         <Link className="nav-link" to="/usuarios">
                                             Usuários
                                         </Link>
                                     </li>
-                                )}
                                 <li className="nav-item" key="galeria">
                                     <Link className="nav-link" to="/galeria">
                                         Galeria

@@ -39,18 +39,11 @@ export default function GerenciarUsuarios() {
             token = JSON.parse(lsToken)
         }
 
-        if (!token || verificaTokenExpirado(token.accessToken) && 
-        validaPermissao(['admin', 'usuario'],
-            token?.user.permissoes
-         )) {
+        if (!token || verificaTokenExpirado(token.accessToken)) {
             navigate('/')
         }
 
-        if (!validaPermissao(['admin', 'usuario'],
-            token?.user.permissoes
-        )){
-            navigate ('/dashboard')
-        }
+    
 
         
 
@@ -58,7 +51,7 @@ export default function GerenciarUsuarios() {
         if(!isNaN(idUser)) {
             setIsEdit(true)
 
-            axios.get('http://localhost:3001/users?id='+idUser)
+            axios.get('http://localhost:8000/api/usuarios/'+ idUser)
             .then((res) => {
 
                 setValue("nome", res.data[0].nome)
@@ -82,7 +75,7 @@ export default function GerenciarUsuarios() {
                     delete data.password
                 }
 
-                axios.put('http://localhost:8000/users/' + id
+                axios.put('http://localhost:8000/api/usuarios/' + id
 
                     ,data
                 )
@@ -94,7 +87,7 @@ export default function GerenciarUsuarios() {
                     })
 
             } else {
-                axios.post('http://localhost:3001/users',
+                axios.post('http://localhost:8000/api/usuarios/',
                     data
                 )
                     .then((res) => {
