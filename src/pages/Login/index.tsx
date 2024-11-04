@@ -35,10 +35,10 @@ export default function Login() {
             console.log(target.email.value)
             console.log(target.senha.value)
 
-            axios.post('http://localhost:3001/login',
+            axios.post('http://localhost:8000/api/login',
                 {
                     email: target.email.value,
-                    password: target.senha.value
+                    password: target.senha.value,
                 }
             ).then((resposta) => { //salva os dados da requisição na localStorage
                 console.log(resposta.data)

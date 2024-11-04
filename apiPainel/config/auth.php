@@ -35,12 +35,12 @@ return [
     |
     */
 
-    'guards' => [
-        'web' => [
-            'driver' => 'session',
-            'provider' => 'users',
-        ],
+'guards' => [
+    'api' => [
+        'driver' => 'sanctum',
+        'provider' => 'usuarios', // ou 'users' se o seu provider for 'users'
     ],
+],
 
     /*
     |--------------------------------------------------------------------------
@@ -59,11 +59,12 @@ return [
     |
     */
 
-    'providers' => [
-        'users' => [
-            'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', App\Models\User::class),
-        ],
+ 'providers' => [
+    'usuarios' => [
+        'driver' => 'eloquent',
+        'model' => App\Models\Usuario::class,
+    ],
+
 
         // 'users' => [
         //     'driver' => 'database',
@@ -112,4 +113,6 @@ return [
 
     'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),
 
+
+    
 ];

@@ -12,6 +12,20 @@ interface IUsuarios {
     permissoes: string
 }
 
+const deleteUsuario = (id) => {
+    if (window.confirm("Tem certeza que deseja excluir este usuário?")) {
+        axios.delete(`http://localhost:8000/api/usuarios/${id}`)
+            .then(() => {
+                alert("Usuário excluído com sucesso!");
+                fetchUsuarios(); // Atualiza a lista de usuários
+            })
+            .catch(error => {
+                console.error("Erro ao excluir usuário:", error);
+                alert("Ocorreu um erro ao tentar excluir o usuário.");
+            });
+    }
+};
+
 export default function Usuarios() {
 
     const navigate = useNavigate()
@@ -27,17 +41,9 @@ export default function Usuarios() {
             token = JSON.parse(lsToken)
         }
 
-        if (!token || verificaTokenExpirado(token.accessToken) && 
-        validaPermissao(['admin', 'usuario'],
-            token?.user.permissoes
-         )) {
+        if (!token || verificaTokenExpirado(token.accessToken)
+         ) {
             navigate('/')
-        }
-
-        if (!validaPermissao(['admin', 'usuario'],
-            token?.user.permissoes
-        )){
-            navigate ('/dashboard')
         }
 
 
@@ -106,7 +112,19 @@ export default function Usuarios() {
                                             <button
                                                 className="btn btn-danger"
                                                 type="button"
-
+                                                onClick={() => {
+                                                    if (window.confirm("Tem certeza que deseja excluir este usuário?")) {
+                                                        axios.delete(`http://localhost:8000/api/usuarios/${usuario.id}`)
+                                                            .then(() => {
+                                                                alert("Usuário excluído com sucesso!");
+                                                                navigate('/usuarios'); 
+                                                            })
+                                                            .catch((erro) => {
+                                                                console.error(erro);
+                                                                alert("Ocorreu um erro ao tentar excluir o usuário.");
+                                                            });
+                                                    }
+                                                }}
                                             >
                                                 Delete
                                             </button>
