@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { LayoutDashboard } from '../../components/LayoutDashboard';
+import { LayoutDashboard } from '../../../components/LayoutDashboard';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Button, Container } from 'react-bootstrap';
 
 interface IForm {
-    cargo: string;
+    voluntario: string;
 }
 
 const GerenciarVoluntarios: React.FC = () => {
@@ -19,9 +19,9 @@ const GerenciarVoluntarios: React.FC = () => {
     useEffect(() => {
         if (id) {
             setIsEdit(true);
-            axios.get(`http://localhost:3001/voluntarios/${id}`)
+            axios.get(`http://localhost:8000/api/voluntarios/${id}`)
                 .then((res) => {
-                    setValue("cargo", res.data.cargo);
+                    setValue("voluntario", res.data.data.voluntario);
                 })
                 .catch((err) => console.log(err));
         }
@@ -29,20 +29,21 @@ const GerenciarVoluntarios: React.FC = () => {
 
     const submitForm: SubmitHandler<IForm> = useCallback(
         async (data) => {
-            const formData = new FormData();
-            formData.append('cargo', data.cargo);
-
+            const payload = {
+                voluntario: data.voluntario,
+            };
+    
             try {
                 if (isEdit) {
-                    await axios.put(`http://localhost:3001/voluntarios/${id}`, formData, {
+                    await axios.put(`http://localhost:8000/api/voluntarios/${id}`, payload, {
                         headers: {
-                            'Content-Type': 'multipart/form-data',
+                            'Content-Type': 'application/json',
                         },
                     });
                 } else {
-                    await axios.post('http://localhost:3001/voluntarios', formData, {
+                    await axios.post('http://localhost:8000/api/voluntarios', payload, {
                         headers: {
-                            'Content-Type': 'multipart/form-data',
+                            'Content-Type': 'application/json',
                         },
                     });
                 }
@@ -56,7 +57,7 @@ const GerenciarVoluntarios: React.FC = () => {
             }
         }, [isEdit, id, navigate]
     );
-
+    
     return (
         <LayoutDashboard>
             <h1>{isEdit ? 'Editar Cargo' : 'Adicionar Cargo'}</h1>
@@ -75,17 +76,17 @@ const GerenciarVoluntarios: React.FC = () => {
                     ref={refForm}
                 >
                     <div className="col-md-12">
-                        <label htmlFor="cargo" className="form-label">Nome do Cargo</label>
+                        <label htmlFor="voluntario" className="form-label">Nome do Cargo</label>
                         <input
                             type="text"
                             className="form-control"
                             placeholder="Nome do Cargo"
-                            id="cargo"
+                            id="voluntario"
                             required
-                            {...register('cargo', { required: 'Nome do Cargo é obrigatório' })}
+                            {...register('voluntario', { required: 'Nome do Cargo é obrigatório' })}
                         />
                         <div className="invalid-feedback">
-                            {errors.cargo && errors.cargo.message}
+                            {errors.voluntario && errors.voluntario.message}
                         </div>
                     </div>
 
