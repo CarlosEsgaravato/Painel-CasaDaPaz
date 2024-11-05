@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\UsuarioController;
+use App\Http\Controllers\Api\VoluntariosController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GaleriaController;
 use Illuminate\Http\Request;
@@ -18,3 +19,6 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::post('/galeria/upload', [GaleriaController::class, 'upload']);
 
+Route::apiResource('voluntarios', VoluntariosController::class)->except([
+    'create', 'edit'
+]);
