@@ -6,12 +6,10 @@ import axios from 'axios';
 import { Button, Container } from 'react-bootstrap';
 
 interface IForm {
-    nome: string;
-    descricao: string;
-    imagem?: FileList;
+    cargo: string;
 }
 
-const GerenciarPremios: React.FC = () => {
+const GerenciarVoluntarios: React.FC = () => {
     const { register, handleSubmit, formState: { errors }, setValue } = useForm<IForm>();
     const refForm = useRef<HTMLFormElement>(null);
     const navigate = useNavigate();
@@ -21,10 +19,9 @@ const GerenciarPremios: React.FC = () => {
     useEffect(() => {
         if (id) {
             setIsEdit(true);
-            axios.get(`http://localhost:3001/premios/${id}`)
+            axios.get(`http://localhost:3001/voluntarios/${id}`)
                 .then((res) => {
-                    setValue("nome", res.data.nome);
-                    setValue("descricao", res.data.descricao);
+                    setValue("cargo", res.data.cargo);
                 })
                 .catch((err) => console.log(err));
         }
@@ -33,32 +30,23 @@ const GerenciarPremios: React.FC = () => {
     const submitForm: SubmitHandler<IForm> = useCallback(
         async (data) => {
             const formData = new FormData();
-            formData.append('nome', data.nome);
-            formData.append('descricao', data.descricao);
-            if (data.imagem && data.imagem.length > 0) {
-                formData.append('imagem', data.imagem[0]);
-            }
-    
-            // Log the FormData content
-            for (let pair of formData.entries()) {
-                console.log(pair[0] + ': ' + pair[1]);
-            }
-    
+            formData.append('cargo', data.cargo);
+
             try {
                 if (isEdit) {
-                    await axios.put(`http://localhost:3001/premios/${id}`, formData, {
+                    await axios.put(`http://localhost:3001/voluntarios/${id}`, formData, {
                         headers: {
                             'Content-Type': 'multipart/form-data',
                         },
                     });
                 } else {
-                    await axios.post('http://localhost:3001/premios', formData, {
+                    await axios.post('http://localhost:3001/voluntarios', formData, {
                         headers: {
                             'Content-Type': 'multipart/form-data',
                         },
                     });
                 }
-                navigate('/premios');
+                navigate('/voluntarios');
             } catch (error: any) {
                 if (error.response) {
                     console.error('Axios error:', error.response.data);
@@ -68,11 +56,10 @@ const GerenciarPremios: React.FC = () => {
             }
         }, [isEdit, id, navigate]
     );
-    
 
     return (
         <LayoutDashboard>
-            <h1>{isEdit ? 'Editar Premiação' : 'Adicionar Premiação'}</h1>
+            <h1>{isEdit ? 'Editar Cargo' : 'Adicionar Cargo'}</h1>
             <Container>
                 <form
                     className="row g-3 needs-validation mb-3"
@@ -88,42 +75,18 @@ const GerenciarPremios: React.FC = () => {
                     ref={refForm}
                 >
                     <div className="col-md-12">
-                        <label htmlFor="nome" className="form-label">Nome</label>
+                        <label htmlFor="cargo" className="form-label">Nome do Cargo</label>
                         <input
                             type="text"
                             className="form-control"
-                            placeholder="Nome da Premiação"
-                            id="nome"
+                            placeholder="Nome do Cargo"
+                            id="cargo"
                             required
-                            {...register('nome', { required: 'Nome é obrigatório' })}
+                            {...register('cargo', { required: 'Nome do Cargo é obrigatório' })}
                         />
                         <div className="invalid-feedback">
-                            {errors.nome && errors.nome.message}
+                            {errors.cargo && errors.cargo.message}
                         </div>
-                    </div>
-
-                    <div className="col-md-12">
-                        <label htmlFor="descricao" className="form-label">Descrição</label>
-                        <textarea
-                            className="form-control"
-                            placeholder="Descrição da Premiação"
-                            id="descricao"
-                            required
-                            {...register('descricao', { required: 'Descrição é obrigatória' })}
-                        />
-                        <div className="invalid-feedback">
-                            {errors.descricao && errors.descricao.message}
-                        </div>
-                    </div>
-
-                    <div className="col-md-12">
-                        <label htmlFor="imagem" className="form-label">Imagem (opcional)</label>
-                        <input
-                            type="file"
-                            className="form-control"
-                            id="imagem"
-                            {...register('imagem')}
-                        />
                     </div>
 
                     <div className="col-md-12">
@@ -133,7 +96,7 @@ const GerenciarPremios: React.FC = () => {
                         <button
                             type="button"
                             className="btn btn-secondary ml-2"
-                            onClick={() => navigate('/premios')}
+                            onClick={() => navigate('/voluntarios')}
                         >
                             Cancelar
                         </button>
@@ -144,4 +107,4 @@ const GerenciarPremios: React.FC = () => {
     );
 };
 
-export default GerenciarPremios;
+export default GerenciarVoluntarios;

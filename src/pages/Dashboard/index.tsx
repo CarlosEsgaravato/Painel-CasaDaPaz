@@ -35,8 +35,8 @@ export default function Dashboard() {
                     <div className="col-md-6">
                         <div className="card mb-4">
                             <div className="card-body">
-                                <h5 className="card-title">Atualização de notícias e eventos</h5>
-                                <p className="card-text">Gerencie as últimas notícias e eventos para manter os visitantes informados.</p>
+                                <h5 className="card-title">Atualização de necessidades de voluntáriados</h5>
+                                <p className="card-text">Gerencie as vagas que necessitam de voluntários no momento.</p>
                             </div>
                         </div>
                     </div>
@@ -45,22 +45,6 @@ export default function Dashboard() {
                             <div className="card-body">
                                 <h5 className="card-title">Gerenciamento de usuários e permissões</h5>
                                 <p className="card-text">Controle os usuários e suas permissões de acesso ao site.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-md-6">
-                        <div className="card mb-4">
-                            <div className="card-body">
-                                <h5 className="card-title">Publicação de novos artigos e postagens</h5>
-                                <p className="card-text">Publique novos conteúdos para manter o site sempre atualizado.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-md-6">
-                        <div className="card mb-4">
-                            <div className="card-body">
-                                <h5 className="card-title">Publicação de Premiações</h5>
-                                <p className="card-text">Divulgue as premiações recebidas pela empresa.</p>
                             </div>
                         </div>
                     </div>

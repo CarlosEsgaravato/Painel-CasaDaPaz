@@ -13,13 +13,17 @@ interface IForm {
     permissoes: string
 }
 
+
 export default function GerenciarUsuarios() {
+
+   
 
     const {
         register,
         handleSubmit,
         formState: { errors },
         setValue,
+        watch
     } = useForm<IForm>()
 
     const refForm = useRef<any>()
@@ -43,9 +47,6 @@ export default function GerenciarUsuarios() {
             navigate('/')
         }
 
-    
-
-        
 
         const idUser = Number(id)
         if(!isNaN(idUser)) {
@@ -54,13 +55,30 @@ export default function GerenciarUsuarios() {
             axios.get('http://localhost:8000/api/usuarios/'+ idUser)
             .then((res) => {
 
-                setValue("nome", res.data[0].nome)
-                setValue("email", res.data[0].email)
-                setValue("permissoes", res.data[0].permissoes)
+                setValue("nome", res.data.data[0].nome)
+                setValue("email", res.data.data[0].email)
+                setValue("permissoes", res.data.data[0].permissoes)
             })
         }
 
     }, [id])
+
+    const [emailPlaceholder, setEmailPlaceholder] = useState("Ex: usuario@example.com");
+    const [nomePlaceholder, setNomePlaceholder] = useState("Ex: usuario@example.com");
+
+    useEffect(() => {
+        if (isEdit) {
+            axios.get(`http://localhost:8000/api/usuarios/${id}`)
+                .then((res) => {
+                    setValue("email", res.data.data.email);
+                    setValue("nome", res.data.data.nome);
+                    setEmailPlaceholder(res.data.data.email);
+                    setNomePlaceholder(res.data.data.nome);
+                });
+        }
+    }, [id, isEdit, setValue]);
+
+    
 
     const submitForm: SubmitHandler<IForm> = useCallback(
         (data) => {
@@ -78,6 +96,7 @@ export default function GerenciarUsuarios() {
                 axios.put('http://localhost:8000/api/usuarios/' + id
 
                     ,data
+                    
                 )
                     .then((res) => {
                         navigate('/usuarios')
@@ -102,6 +121,8 @@ export default function GerenciarUsuarios() {
         }, [isEdit])
 
     return (
+            
+
         <>
             <LayoutDashboard>
                 <h1>{isEdit ? 'Editar Usuario' : 'Adicionar Ususario' }</h1>
@@ -134,7 +155,7 @@ export default function GerenciarUsuarios() {
                         <input
                             type="text"
                             className="form-control"
-                            placeholder="Dephay"
+                            placeholder={nomePlaceholder}
                             id="nome"
                             required
                             {...register('nome',
@@ -158,7 +179,7 @@ export default function GerenciarUsuarios() {
                         <input
                             type="email"
                             className="form-control"
-                            placeholder="Dephay"
+                            placeholder={emailPlaceholder}
                             id="email"
                             required
                             {...register('email',
@@ -174,39 +195,6 @@ export default function GerenciarUsuarios() {
                         className="col-md-12"
                     >
                         <label
-                            htmlFor="permissoes"
-                            className="form-label"
-                        >
-                            Permissoes
-                        </label>
-                        <select
-                            className="form-select"
-                            defaultValue={""}
-                            id="permissoes"
-                            required
-                            {...register("permissoes", 
-                                {required: "Selecione"}
-                            )}
-                        >
-                            <option value={""}>
-                                Selecione o Tipo
-                            </option>
-                            <option value={"admin"}>
-                                Admin
-                            </option>
-                            <option value={"colaborador"}>
-                                Colaborador
-                            </option>
-                        </select>
-                        <div className="invalid-feedback">
-                            {errors.permissoes && errors.permissoes.message}
-                        </div>
-                    </div>
-
-                    <div
-                        className="col-md-12"
-                    >
-                        <label
                             htmlFor="password"
                             className="form-label"
                         >
@@ -215,7 +203,7 @@ export default function GerenciarUsuarios() {
                         <input
                             type="password"
                             className="form-control"
-                            placeholder="Dephay"
+                            placeholder="alterar senha"
                             id="password"
                             // required={!isEdit}
                             // {...register('password',

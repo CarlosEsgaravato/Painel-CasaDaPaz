@@ -8,21 +8,19 @@ import Dashboard from './pages/Dashboard'
 import Usuarios from './pages/Usuarios'
 import GerenciarUsuarios from './pages/Usuarios/Gerenciar'
 import Galeria from './pages/Galeria'
-import Premios from './pages/Premios'
-import GerenciarPremios from './pages/Premios/gerenciarPremios'
+import Voluntarios from './pages/Voluntarios'
+import GerenciarVoluntarios from './pages/Voluntarios/gerenciarVoluntarios'
 import GerenciarEvento from './pages/Galeria/gerenciarEvento'
 import VisualizarFotos from './pages/Galeria/vizualizarFotos'
 import AdicionarFotos from './pages/Galeria/adicionarFotos'
-
 
 export const Rotas = () => {
     return (
         <BrowserRouter>
             <Routes>
-                {/* www.google.com.br/profchines */}
                 <Route
                     path='/' // caminho 
-                    element={<Login />} // elemento a ser enderizado
+                    element={<Login />} // elemento a ser renderizado
                 />
 
                 <Route
@@ -41,18 +39,18 @@ export const Rotas = () => {
                 />
 
                 <Route
-                    path='/premios'
-                    element={<Premios />}
+                    path='/voluntarios'
+                    element={<Voluntarios />}
                 />
 
                 <Route
-                    path='/premios/criar'
-                    element={<GerenciarPremios />}
+                    path='/voluntarios/criar'
+                    element={<GerenciarVoluntarios />}
                 />
 
                 <Route
-                    path='/premios/editar/:id'
-                    element={<GerenciarPremios />}
+                    path='/voluntarios/editar/:id'
+                    element={<GerenciarVoluntarios />}
                 />
 
                 <Route

@@ -4,21 +4,19 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Button } from 'react-bootstrap';
 
-interface IPremio {
+interface IVoluntario {
     id: number;
-    nome: string;
-    descricao: string;
-    imagem?: string;
+    cargo: string;
 }
 
-const Premios: React.FC = () => {
+const Voluntarios: React.FC = () => {
     const navigate = useNavigate();
-    const [premios, setPremios] = useState<Array<IPremio>>([]);
+    const [voluntarios, setVoluntarios] = useState<Array<IVoluntario>>([]);
 
     useEffect(() => {
-        axios.get('http://localhost:3001/premios')
+        axios.get('http://localhost:3001/voluntarios')
             .then((resposta) => {
-                setPremios(resposta.data);
+                setVoluntarios(resposta.data);
             })
             .catch((err) => {
                 console.log(err);
@@ -26,9 +24,9 @@ const Premios: React.FC = () => {
     }, []);
 
     const handleDelete = (id: number) => {
-        axios.delete(`http://localhost:3001/premios/${id}`)
+        axios.delete(`http://localhost:3001/voluntarios/${id}`)
             .then(() => {
-                setPremios(premios.filter(premio => premio.id !== id));
+                setVoluntarios(voluntarios.filter(voluntario => voluntario.id !== id));
             })
             .catch((err) => {
                 console.log(err);
@@ -38,8 +36,8 @@ const Premios: React.FC = () => {
     return (
         <LayoutDashboard>
             <div className="d-flex justify-content-between mt-3">
-                <h1>Premiações</h1>
-                <Button variant="success" onClick={() => navigate('/premios/criar')}>
+                <h1>Voluntários</h1>
+                <Button variant="success" onClick={() => navigate('/voluntarios/criar')}>
                     Adicionar
                 </Button>
             </div>
@@ -48,31 +46,25 @@ const Premios: React.FC = () => {
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Nome</th>
-                        <th>Descrição</th>
-                        <th>Imagem</th>
+                        <th>Cargo</th>
                         <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {premios.map((premio, index) => (
-                        <tr key={premio.id}>
+                    {voluntarios.map((voluntario, index) => (
+                        <tr key={voluntario.id}>
                             <td>{index + 1}</td>
-                            <td>{premio.nome}</td>
-                            <td>{premio.descricao}</td>
-                            <td>
-                                {premio.imagem && <img src={premio.imagem} alt={premio.nome} style={{ width: '100px' }} />}
-                            </td>
+                            <td>{voluntario.cargo}</td>
                             <td>
                                 <Button
                                     variant="warning"
-                                    onClick={() => navigate(`/premios/editar/${premio.id}`)}
+                                    onClick={() => navigate(`/voluntarios/editar/${voluntario.id}`)}
                                 >
                                     Editar
                                 </Button>
                                 <Button
                                     variant="danger"
-                                    onClick={() => handleDelete(premio.id)}
+                                    onClick={() => handleDelete(voluntario.id)}
                                     className="ml-2"
                                 >
                                     Delete
@@ -86,4 +78,4 @@ const Premios: React.FC = () => {
     );
 };
 
-export default Premios;
+export default Voluntarios;
