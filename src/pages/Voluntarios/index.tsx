@@ -6,7 +6,7 @@ import { Button } from 'react-bootstrap';
 
 interface IVoluntario {
     id: number;
-    cargo: string;
+    voluntario: string;
 }
 
 const Voluntarios: React.FC = () => {
@@ -14,9 +14,9 @@ const Voluntarios: React.FC = () => {
     const [voluntarios, setVoluntarios] = useState<Array<IVoluntario>>([]);
 
     useEffect(() => {
-        axios.get('http://localhost:3001/voluntarios')
+        axios.get('http://localhost:8000/api/voluntarios')
             .then((resposta) => {
-                setVoluntarios(resposta.data);
+                setVoluntarios(resposta.data.data);
             })
             .catch((err) => {
                 console.log(err);
@@ -24,7 +24,7 @@ const Voluntarios: React.FC = () => {
     }, []);
 
     const handleDelete = (id: number) => {
-        axios.delete(`http://localhost:3001/voluntarios/${id}`)
+        axios.delete(`http://localhost:8000/api/voluntarios/${id}`)
             .then(() => {
                 setVoluntarios(voluntarios.filter(voluntario => voluntario.id !== id));
             })
@@ -54,7 +54,7 @@ const Voluntarios: React.FC = () => {
                     {voluntarios.map((voluntario, index) => (
                         <tr key={voluntario.id}>
                             <td>{index + 1}</td>
-                            <td>{voluntario.cargo}</td>
+                            <td>{voluntario.voluntario}</td>
                             <td>
                                 <Button
                                     variant="warning"
