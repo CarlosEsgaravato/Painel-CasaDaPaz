@@ -2,17 +2,18 @@ import {
     BrowserRouter,
     Routes,
     Route
-} from 'react-router-dom'
-import Login from './pages/Login'
-import Dashboard from './pages/Dashboard'
-import Usuarios from './pages/Usuarios'
-import GerenciarUsuarios from './pages/Usuarios/Gerenciar'
-import Galeria from './pages/Galeria'
-import Voluntarios from './pages/Voluntarios'
-import GerenciarVoluntarios from './pages/Voluntarios/gerenciar/gerenciarVoluntarios'
-import GerenciarEvento from './pages/Galeria/gerenciarEvento'
-import VisualizarFotos from './pages/Galeria/vizualizarFotos'
-import AdicionarFotos from './pages/Galeria/adicionarFotos'
+} from 'react-router-dom';
+import Login from './pages/Login';
+import Dashboard from './pages/Dashboard';
+import Usuarios from './pages/Usuarios';
+import GerenciarUsuarios from './pages/Usuarios/Gerenciar';
+import Galeria from './pages/Galeria';
+import Voluntarios from './pages/Voluntarios';
+import GerenciarVoluntarios from './pages/Voluntarios/gerenciar/gerenciarVoluntarios';
+import GerenciarEvento from './pages/Galeria/gerenciarEvento';
+import VisualizarFotos from './pages/Galeria/vizualizarFotos';
+import AdicionarFotos from './pages/Galeria/adicionarFotos';
+import UploadImage from './components/UploadImage/index';
 
 export const Rotas = () => {
     return (
@@ -78,7 +79,12 @@ export const Rotas = () => {
                     element={<AdicionarFotos />} 
                 />
 
+                <Route 
+                    path='/upload' 
+                    element={<UploadImage />} // Adicione a nova rota aqui
+                />
             </Routes>
         </BrowserRouter>
     )
-}
+};
+
