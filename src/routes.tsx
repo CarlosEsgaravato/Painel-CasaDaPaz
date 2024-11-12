@@ -7,13 +7,15 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Usuarios from './pages/Usuarios';
 import GerenciarUsuarios from './pages/Usuarios/Gerenciar';
-import Galeria from './pages/Galeria';
+import Galeria from './pages/Galeria1';
 import Voluntarios from './pages/Voluntarios';
 import GerenciarVoluntarios from './pages/Voluntarios/gerenciar/gerenciarVoluntarios';
-import GerenciarEvento from './pages/Galeria/gerenciarEvento';
-import VisualizarFotos from './pages/Galeria/vizualizarFotos';
-import AdicionarFotos from './pages/Galeria/adicionarFotos';
-import UploadImage from './components/UploadImage/index';
+import GerenciarEvento from './pages/Galeria1/gerenciarEvento';
+import VisualizarFotos from './pages/Galeria1/vizualizarFotos';
+import AdicionarFotos from './pages/Galeria1/adicionarFotos';
+import UploadImage from './pages/Galeria/index';
+import GerenciarGaleria from './pages/Galeria/gerenciar/gerenciarGaleria';
+
 
 export const Rotas = () => {
     return (
@@ -83,7 +85,12 @@ export const Rotas = () => {
                     path='/upload' 
                     element={<UploadImage />} // Adicione a nova rota aqui
                 />
-            </Routes>
+
+                <Route
+                     path="/galeria/gerenciar" 
+                     element={<GerenciarGaleria />} 
+                />
+                </Routes>
         </BrowserRouter>
     )
 };

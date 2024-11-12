@@ -30,4 +30,21 @@ class ImageController extends Controller
         $images = Image::all();
         return response()->json($images);
     }
+
+    public function destroy($id)
+    {
+        $image = Image::find($id);
+
+        if (!$image) {
+            return response()->json(['message' => 'Image not found'], 404);
+        }
+
+        // Delete the image file from storage
+        Storage::disk('public')->delete('images/' . $image->filename);
+
+        // Delete the image record from the database
+        $image->delete();
+
+        return response()->json(['message' => 'Image deleted successfully'], 200);
+    }
 }

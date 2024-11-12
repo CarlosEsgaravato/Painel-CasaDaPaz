@@ -1,89 +1,76 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { LayoutDashboard } from '../../components/LayoutDashboard';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Button } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+import { FaTimes } from 'react-icons/fa';
 
-interface IEvento {
+interface Image {
     id: number;
-    nome: string;
-    descricao: string;
+    filename: string;
 }
 
 const Galeria: React.FC = () => {
+    const [images, setImages] = useState<Image[]>([]);
     const navigate = useNavigate();
-    const [eventos, setEventos] = useState<Array<IEvento>>([]);
+
+    const loadImages = async () => {
+        try {
+            const response = await axios.get<Image[]>('http://localhost:8000/api/images');
+            setImages(response.data);
+        } catch (error) {
+            console.error('Erro ao carregar imagens:', error);
+        }
+    };
+
+    const handleDelete = async (id: number) => {
+        try {
+            const response = await axios.delete(`http://localhost:8000/api/images/${id}`);
+            console.log('Resposta da API ao deletar:', response);
+            setImages(images.filter(image => image.id !== id));
+        } catch (error) {
+            console.error('Erro ao deletar imagem:', error);
+        }
+    };
 
     useEffect(() => {
-        axios.get('http://localhost:3001/eventos')
-            .then((resposta) => {
-                setEventos(resposta.data);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
+        loadImages();
     }, []);
-
-    const handleDelete = (id: number) => {
-        axios.delete(`http://localhost:3001/eventos/${id}`)
-            .then(() => {
-                setEventos(eventos.filter(evento => evento.id !== id));
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    };
 
     return (
         <LayoutDashboard>
             <div className="d-flex justify-content-between mt-3">
-                <h1>Galeria de Eventos</h1>
-                <Button variant="success" onClick={() => navigate('/galeria/criar')}>
-                    Adicionar Evento
+                <h1>Galeria de Imagens</h1>
+                <Button variant="success" onClick={() => navigate('/galeria/gerenciar')}>
+                    Adicionar Imagem
                 </Button>
             </div>
-
-            <table className="table table-striped">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Nome</th>
-                        <th>Descrição</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {eventos.map((evento, index) => (
-                        <tr key={evento.id}>
-                            <td>{index + 1}</td>
-                            <td>{evento.nome}</td>
-                            <td>{evento.descricao}</td>
-                            <td>
-                                <Button
-                                    variant="warning"
-                                    onClick={() => navigate(`/galeria/editar/${evento.id}`)}
-                                >
-                                    Editar
-                                </Button>
-                                <Button
-                                    variant="danger"
-                                    onClick={() => handleDelete(evento.id)}
-                                    className="ml-2"
-                                >
-                                    Delete
-                                </Button>
-                                <Button
-                                    variant="info"
-                                    onClick={() => navigate(`/galeria/${evento.id}/fotos`)}
-                                    className="ml-2"
-                                >
-                                    Ver Fotos
-                                </Button>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+            <div className="d-flex flex-wrap">
+                {images.map((image) => (
+                    <div key={image.id} style={{ margin: '10px', position: 'relative' }}>
+                        <img
+                            src={`http://localhost:8000/storage/images/${image.filename}`}
+                            alt={image.filename}
+                            style={{ width: '200px', height: '200px', objectFit: 'cover' }}
+                        />
+                        <Button
+                            variant="light"
+                            onClick={() => handleDelete(image.id)}
+                            style={{
+                                position: 'absolute',
+                                top: '10px',
+                                right: '10px',
+                                backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                                border: 'none',
+                                padding: '5px',
+                                borderRadius: '50%',
+                            }}
+                        >
+                            <FaTimes style={{ color: 'black' }} />
+                        </Button>
+                    </div>
+                ))}
+            </div>
         </LayoutDashboard>
     );
 };

@@ -1,7 +1,7 @@
 import { ReactNode, useEffect, useState } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import { IToken } from "../../interfaces/token";
-import { validaPermissao } from "../../services/token";
+import { validaPermissao } from "../../services/token"; 
 import './layoutdashboard.css';
 
 interface IProps {
@@ -71,6 +71,11 @@ export const LayoutDashboard = (props: IProps) => {
                                 <li className="nav-item" key="premios">
                                     <Link className="nav-link" to="/voluntarios">
                                         Voluntários
+                                    </Link>
+                                </li>
+                                <li className="nav-item" key="premios">
+                                    <Link className="nav-link" to="/upload">
+                                        Galeria
                                     </Link>
                                 </li>
                             </ul>
